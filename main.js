@@ -111,7 +111,7 @@ function startFloatingHearts() {
 // Dynamic Road & Photo Loading Logic
 // ---------------------------------------------------------
 
-const maxPhotosToCheck = 100;
+const maxPhotosToCheck = 68;
 const galleryGrid = document.getElementById('gallery-grid');
 const placeholder = document.querySelector('.photo-placeholder');
 
