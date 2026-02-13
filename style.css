@@ -1,0 +1,405 @@
+:root {
+  --primary-color: #c2185b;
+  --secondary-color: #f48fb1;
+  --accent-color: #ad1457;
+  --bg-color: #f8bbd0;
+  /* Darker aesthetic pink */
+  --text-color: #4a4a4a;
+  --font-heading: 'Dancing Script', cursive;
+  --font-body: 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease;
+  position: relative;
+  /* For pseudo-element absolute positioning */
+}
+
+/* Doodle Pattern Background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/doodles.png');
+  background-repeat: repeat;
+  background-size: 400px;
+  /* Adjust size of doodles */
+  opacity: 0.15;
+  /* Subtle blend */
+  z-index: -2;
+  /* Behind everything including hearts */
+  pointer-events: none;
+}
+
+/* Landing Overlay */
+#landing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  /* background: radial-gradient(circle at center, #fff, #f8bbd0); REMOVED to show body doodles */
+  background: transparent;
+  /* Show the body background + doodles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+  /* Smooth slide & fade */
+  transform: translateX(0);
+  /* Default state */
+}
+
+/* Slide Out Animation - Diagonal Fly Away */
+#landing-overlay.slide-out {
+  transform: translate(100%, -100%) rotate(-20deg);
+  /* Fly to Top-Right with tilt */
+  opacity: 0;
+  /* Fade out as it flies */
+}
+
+/* Plane Icon Styling */
+.plane-icon {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  /* Attach near top-right corner to lead */
+  transform: rotate(45deg);
+  /* Point Top-Right */
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+}
+
+.plane-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.landing-content {
+  text-align: center;
+  animation: fadeIn 2s ease;
+}
+
+.landing-title {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.landing-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+#enter-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: var(--font-body);
+}
+
+#enter-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+}
+
+/* Main Content */
+#main-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 2s ease-out, transform 2s ease-out;
+  /* Slower, smoother reveal */
+}
+
+#main-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hidden {
+  display: none;
+  /* Initially hidden to prevent scroll */
+}
+
+section {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+h2,
+h3 {
+  font-family: var(--font-heading);
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* Gallery - Memory Map / Dynamic Timeline */
+.gallery-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 40px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 200px;
+  /* Ensure height for SVG */
+}
+
+/* SVG Container for Dynamic Road */
+.road-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* Behind items */
+  overflow: visible;
+  pointer-events: none;
+}
+
+.road-path {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 5px;
+  stroke-dasharray: 15, 15;
+  /* Dashed line */
+  stroke-linecap: round;
+  opacity: 0;
+  /* Initially hidden */
+  transition: opacity 1s ease-in-out;
+}
+
+.road-path.visible {
+  opacity: 0.6;
+  /* Reveal nicely */
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  /* Takes up half the container width */
+  padding: 20px 40px;
+  box-sizing: border-box;
+  opacity: 0;
+  /* Hidden initially for scroll reveal */
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+  z-index: 1;
+}
+
+/* Interactive Reveal Class */
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Zig-Zag Logic */
+.timeline-item:nth-child(odd) {
+  align-self: flex-start;
+  text-align: right;
+  /* Photos on left look better slightly aligned right usually to hug the line? or standard */
+  /* Actually for polaroids, centering them in their half is fine */
+}
+
+.timeline-item:nth-child(even) {
+  align-self: flex-end;
+  text-align: left;
+}
+
+/* Connecting dots to the line */
+.timeline-item::after {
+  content: '❤️';
+  position: absolute;
+  top: 40px;
+  /* Approx center of top part */
+  font-size: 1.5rem;
+  z-index: 2;
+}
+
+.timeline-item:nth-child(odd)::after {
+  right: -12px;
+  /* Position on the center line */
+}
+
+.timeline-item:nth-child(even)::after {
+  left: -12px;
+}
+
+/* Polaroid Styling */
+.polaroid {
+  background: white;
+  padding: 15px 15px 50px 15px;
+  /* Large bottom padding for caption look */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.timeline-item:nth-child(even) .polaroid {
+  transform: rotate(2deg);
+  /* Alternate rotations */
+}
+
+.polaroid:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.polaroid img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #eee;
+  /* Slight inner border */
+}
+
+/* Message Section */
+.letter-container {
+  background: white;
+  padding: 3rem;
+  border-radius: 5px;
+  /* Letter feel */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  background-image: linear-gradient(#fdfbfb 1px, transparent 1px);
+  background-size: 100% 2em;
+  /* Lined paper effect */
+  line-height: 2em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Floating Hearts Background */
+.heart {
+  position: fixed;
+  color: #fff;
+  /* White base for better blending with pink bg */
+  text-shadow: 0 0 5px rgba(255, 192, 203, 0.5);
+  /* Soft glow */
+  top: 100vh;
+  /* Start below screen */
+  animation-name: floatUp;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: var(--opacity, 0.5);
+    /* Use JS set opacity or default */
+  }
+
+  50% {
+    transform: translateY(-50vh) translateX(20px) rotate(10deg);
+  }
+
+  100% {
+    transform: translateY(-110vh) translateX(-20px) rotate(-10deg);
+    opacity: 0;
+  }
+}
+
+#hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.love-message {
+  margin-top: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.love-message p {
+  margin: 18px 0;
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.love-message strong {
+  font-size: 1.4rem;
+}
