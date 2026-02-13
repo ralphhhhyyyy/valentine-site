@@ -33,7 +33,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/doodles.png');
+  background-image: url('public/doodles.png');
   background-repeat: repeat;
   background-size: 400px;
   /* Adjust size of doodles */
