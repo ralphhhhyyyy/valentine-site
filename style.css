@@ -75,14 +75,17 @@ body::before {
 /* Plane Icon Styling */
 .plane-icon {
   position: absolute;
-  top: 10%;
-  right: 10%;
-  /* Attach near top-right corner to lead */
+  bottom: 5%;
+  right: 5%;
+  /* Attach near bottom-right corner */
   transform: rotate(45deg);
   /* Point Top-Right */
-  width: 150px;
-  height: 150px;
+  width: 80px;
+  /* Much smaller */
+  height: 80px;
   pointer-events: none;
+  opacity: 0.8;
+  /* Slightly transparent */
 }
 
 .plane-icon svg {
