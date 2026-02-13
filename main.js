@@ -207,7 +207,7 @@ function loadPhotos() {
 
     for (let i = 1; i <= maxPhotosToCheck; i++) {
         extensions.forEach(ext => {
-            const path = `/photos/${i}.${ext}`;
+            const path = `public/photos/${i}.${ext}`;
             const img = document.createElement('img');
             img.src = path;
             img.alt = `Memory ${i}`;
