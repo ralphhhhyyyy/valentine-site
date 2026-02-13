@@ -1,4 +1,4 @@
-import confetti from 'canvas-confetti';
+// import confetti from 'canvas-confetti';
 
 const enterBtn = document.getElementById('enter-btn');
 const landingOverlay = document.getElementById('landing-overlay');
